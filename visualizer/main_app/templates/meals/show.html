@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+    <h1>Meal details</h1>
+    <div>
+        {{meal.name}}
+    </div>
+    <div>
+        <form method="POST" action="{% url 'add_ingredient' meal.id %}">
+            {% csrf_token %}
+            {{ ingredient_form.as_p }}
+            <input type="submit" value="add ingredient">
+        </form>
+        <table>
+            <thead>
+                <tr><th>Date</th><th>Meal</th></tr>
+            </thead>
+            <tbody>
+                {% for ingredient in meal.ingredient_set.all %}
+                <tr>
+                    <td>{{ingredient.name}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{% url 'meals_update' meal.id %}">Update details</a>
+    <a href="{% url 'meals_delete' meal.id %}">DELETE this meal</a>
