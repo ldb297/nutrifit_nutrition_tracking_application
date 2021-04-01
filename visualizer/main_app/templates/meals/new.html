@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section>
+    <h1>add a meal</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{cat_form.as_p}}
+        <button type="submit">Save</button>
+    </form>
+</section>
+
+{% endblock %}
