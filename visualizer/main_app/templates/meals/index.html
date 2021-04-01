@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>All your meals</h1>
+<hr/>
+
+<a href="/meals/create">Add a new meal!</a>
+<hr/>
+{% for x in meals %}
+    <a href="/meals/{{meal.id}}">
+        <p>On {{x.date}}, you had a {{x.meal}} consisting of 
+            {% for y in x.ingredients %}
+            {{y.name}}
+            {% endfor %}
+        </p>
+    </a>
+{% endfor %}
+
+{% endblock %}
