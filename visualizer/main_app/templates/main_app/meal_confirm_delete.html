@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Tracker</title>
+</head>
+
+<body>
+    <h1>Meal Tracker</h1>
+    <hr/>
+    <h2>Delete Meal</h2>
+    
+    <p>Are you sure you want to delete this meal? {{meal}}</p>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="yes, delete">
+    </form>
+</body>
+
+</html>
