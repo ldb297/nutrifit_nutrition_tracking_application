@@ -3,7 +3,17 @@
     {% block content %}
     <h1>Meal details</h1>
     <div>
-        {{meal.name}}
+        {{meal.get_meal_display}} on {{meal.date}}
+        <ul>
+            {% for x in ingredients %}
+            {{ x.name }} {{x.meal_id}}
+            <li>kcals: {{x.kcals}}</li>
+            <li>carbs: {{x.carbs}}</li>
+            <li>fats: {{x.fats}}</li>
+            <li>sugars: {{x.sugars}}</li>
+            <br/>
+            {% endfor %}
+        </ul>
     </div>
     <div>
         <form method="POST" action="{% url 'add_ingredient' meal.id %}">
@@ -25,5 +35,7 @@
         </table>
     </div>
 
-    <a href="{% url 'meals_update' meal.id %}">Update details</a>
+    <a href="{% url 'meals_update' meal.id %}">Update details</a> <br/>
     <a href="{% url 'meals_delete' meal.id %}">DELETE this meal</a>
+
+{% endblock %}
