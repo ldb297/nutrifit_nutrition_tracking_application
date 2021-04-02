@@ -10,7 +10,7 @@ MEALS = (
 )
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=100, default='None')
+    name = models.CharField(max_length=100)
     kcals = models.IntegerField()
     carbs = models.IntegerField()
     fats = models.IntegerField()
