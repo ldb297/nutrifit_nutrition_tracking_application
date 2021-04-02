@@ -55,9 +55,21 @@ def meals_index(request):
 @login_required()
 def meals_show(request, meal_id):
   meal = Meal.objects.get(id=meal_id)
+  ingredients = meal.ingredients.all()
+  ingredient_list = []
+  for x in ingredients:
+    ingredient = {
+      'name': x.name,
+      'kcals': x.kcals,
+      'carbs': x.carbs,
+      'fats': x.fats,
+      'sugars': x.sugars,
+    }
+    ingredient_list.append(ingredient)
   ingredient_form = IngredientForm()
   return render(request, 'meals/show.html', {
     'meal': meal,
+    'ingredients': ingredient_list,
     'ingredient_form': ingredient_form
   })
 
