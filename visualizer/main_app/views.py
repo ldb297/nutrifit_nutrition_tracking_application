@@ -9,22 +9,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Meal, Ingredient
 from .forms import MealForm, IngredientForm
 
-class MealUpdate(UpdateView):
-  model = Meal
-  fields = ['date', 'meal']
-
-  def form_valid(self, form):
-    self.object = form.save(commit=False)
-    self.object.save()
-    return HttpResponseRedirect('/meals' + str(self.object.pk))
-
-class MealDelete(DeleteView):
-  model = Meal
-  success_url = '/meals'
-
-
 def index(request):
-    return render(request, 'index.html')
+    user = request.user
+    user_meals = len(user.meal_set.all())
+    return render(request, 'index.html', { 'user': user, 'meals': user_meals })
 
 #meals
 @login_required()
@@ -45,6 +33,7 @@ def meals_index(request):
           'id': y.id
         })
       this_meal = {
+        'id': x.id,
         'meal': str(x.get_meal_display()),
         'date': str(x.date),
         'ingredients': ingredient_list
@@ -74,13 +63,21 @@ def meals_show(request, meal_id):
   })
 
 def meals_update(request, pk):
-  meal = Meal.objects.get(id=pk)
-  meal_form = MealForm(meal)
-  return render(request, 'meals/meal_form.html', {'form': meal_form})
-  def form_valid(self, form):
-    self.object = form.save(commit=False)
-    self.object.save()
-    return HttpResponseRedirect('/meals/' + str(self.object.pk))
+  if request.POST:
+    meal = Meal.objects.get(id=pk)
+    meal.date = request.POST.get('date')
+    meal.meal = request.POST.get('meal')
+    meal.save()
+    return redirect('meals')
+  else:
+    meal = Meal.objects.get(id=pk)
+    meal_form = MealForm(instance=meal)
+    return render(request, 'meals/meal_form.html', {'form': meal_form})
+
+class MealDelete(DeleteView):
+  model = Meal
+  success_url = '/meals'
+
 
 @login_required()
 def meals_new(request):
@@ -95,11 +92,12 @@ def meals_new(request):
 
 @login_required()
 def add_ingredient(request, pk):
+  meal = Meal.objects.get(id=pk)
   form = IngredientForm(request.POST)
   if form.is_valid():
     new_ingredient = form.save(commit=False)
-    new_ingredient.meal_id = pk
     new_ingredient.save()
+    meal.ingredients.add(new_ingredient)
   return redirect('meals_show', meal_id = pk)
 
 def sign_up(request):
