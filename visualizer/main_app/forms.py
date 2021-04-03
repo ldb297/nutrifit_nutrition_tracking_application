@@ -9,4 +9,10 @@ class MealForm(forms.ModelForm):
 class IngredientForm(forms.ModelForm):
     class Meta:
         model = Ingredient
-        fields = ['name', 'kcals', 'carbs', 'fats', 'sugars']
+        fields = ['name', 'protein', 'kcals', 'carbs', 'fats', 'sugars']
+
+class ApiForm(forms.ModelForm):
+
+    class Meta:
+        model = Ingredient
+        fields = ['name']
