@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section calss="form-section">
+<section>
     <h1>Add a Meal</h1>
+    (dates must be in YYYY-MM-DD format)
     <form method="POST">
         {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Save</button>
+        {{ form.as_p }}
+        <button type="submit" value="Update">Save</button>
     </form>
 </section>
 
