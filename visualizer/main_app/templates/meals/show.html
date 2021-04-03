@@ -8,8 +8,7 @@
     <a href="{% url 'meals_delete' meal.id %}">DELETE this meal</a>
         <ul>
             {% for x in ingredients %}
-            {{x}}
-            {{ x.name }} {{x.id}}<a href="{% url 'delete_ingredient' meal.id x.id %}">delete this item</a>
+            {{ x.name }} <a href="{% url 'delete_ingredient' meal.id x.id %}">delete this item</a>
             <li>kcals: {{x.kcals}}</li>
             <li>carbs: {{x.carbs}}</li>
             <li>fats: {{x.fats}}</li>
@@ -20,7 +19,7 @@
     </div>
 
     <div>
-        <a href='/api'> search for ingredients </a>
+        search for ingredients
         <form method="POST">
             {% csrf_token %}
             {{ api_form.as_p }}
