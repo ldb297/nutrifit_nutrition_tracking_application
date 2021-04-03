@@ -7,10 +7,14 @@
 <a href="/meals/create">Add a new meal!</a>
 <hr/>
 {% for x in meals %}
-    <a href="/meals/{{meal.id}}">
+    <a href="/meals/{{x.id}}">
         <p>On {{x.date}}, you had a {{x.meal}} consisting of 
             {% for y in x.ingredients %}
+            {% if y != None %}
             {{y.name}}
+            {% elif y == None %}
+            Nothing?? U ate nothing for {{x.meal}}?
+            {% endif %}
             {% endfor %}
         </p>
     </a>
