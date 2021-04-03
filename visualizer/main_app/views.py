@@ -7,7 +7,44 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 
 from .models import Meal, Ingredient
-from .forms import MealForm, IngredientForm
+from .forms import MealForm, IngredientForm, ApiForm
+
+import requests
+
+API_URL = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query="
+
+# def api(request):
+#   ingredient_form = IngredientForm()
+#   user_meals = list(request.user.meal_set.all())
+#   print(user_meals)
+#   if request.POST:
+#     api_form = ApiForm()
+#     keyword = request.POST.get('name')
+#     response = requests.get(f"{API_URL}{keyword}&pageSize=25")
+#     response = response.json()
+#     nutrients = response['foods'][0]['foodNutrients']
+#     for x in nutrients:
+#       if x['nutrientId'] == 1003:
+#         protein = x['value']
+#       elif x['nutrientId'] == 1004:
+#         fats = x['value']
+#       elif x['nutrientId'] == 1005:
+#         carbs = x['value']
+#       elif x['nutrientId'] == 1008:
+#         kcals = x['value']
+#       elif x['nutrientId'] == 2000:
+#         sugars = x['value']
+#     nutrient_stats = {
+#       'name': keyword,
+#       'protein': protein,
+#       'kcals': kcals,
+#       'carbs': carbs,
+#       'fats': fats,
+#       'sugars': sugars
+#       }
+#     return render(request, 'api.html', { 'api_form': api_form, 'ingredient': nutrient_stats, 'ingredient_form':ingredient_form, 'user_meals':user_meals })
+#   api_form = ApiForm()
+#   return render(request, 'api.html', { 'api_form': api_form, 'user_meals':user_meals })
 
 def index(request):
     user = request.user
@@ -17,7 +54,6 @@ def index(request):
 #meals
 @login_required()
 def meals_index(request):
-  # can access user through request
     meal_results = []
     result = Meal.objects.filter(user = request.user)
     for x in result:
@@ -48,6 +84,7 @@ def meals_show(request, meal_id):
   ingredient_list = []
   for x in ingredients:
     ingredient = {
+      'id': x.id,
       'name': x.name,
       'kcals': x.kcals,
       'carbs': x.carbs,
@@ -56,10 +93,39 @@ def meals_show(request, meal_id):
     }
     ingredient_list.append(ingredient)
   ingredient_form = IngredientForm()
+  api_form = ApiForm()
+  nutrient_stats = {}
+  if request.POST:
+    api_form = ApiForm()
+    keyword = request.POST.get('name')
+    response = requests.get(f"{API_URL}{keyword}&pageSize=25")
+    response = response.json()
+    nutrients = response['foods'][0]['foodNutrients']
+    for x in nutrients:
+      if x['nutrientId'] == 1003:
+        protein = x['value']
+      elif x['nutrientId'] == 1004:
+        fats = x['value']
+      elif x['nutrientId'] == 1005:
+        carbs = x['value']
+      elif x['nutrientId'] == 1008:
+        kcals = x['value']
+      elif x['nutrientId'] == 2000:
+        sugars = x['value']
+    nutrient_stats = {
+      'name': keyword,
+      'protein': protein,
+      'kcals': kcals,
+      'carbs': carbs,
+      'fats': fats,
+      'sugars': sugars
+      }
   return render(request, 'meals/show.html', {
     'meal': meal,
     'ingredients': ingredient_list,
-    'ingredient_form': ingredient_form
+    'ingredient_form': ingredient_form,
+    'ingredient': nutrient_stats,
+    'api_form': api_form
   })
 
 def meals_update(request, pk):
@@ -78,6 +144,9 @@ class MealDelete(DeleteView):
   model = Meal
   success_url = '/meals'
 
+class IngredientDelete(DeleteView):
+  model = Ingredient
+  success_url = '/meals'
 
 @login_required()
 def meals_new(request):
