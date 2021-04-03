@@ -9,6 +9,6 @@ urlpatterns = [
     path('meals/<int:pk>/update/', views.meals_update, name='meals_update'),
     path('meals/<int:pk>/delete/', views.MealDelete.as_view(), name='meals_delete'),
     path('meals/<int:pk>/add_ingredient/', views.add_ingredient, name='add_ingredient'),
-    path('meals/<int:pk>/delete_ingredient/<int:ingredient_id>', views.IngredientDelete.as_view(), name="delete_ingredient"),
+    path('meals/<int:meal_id>/delete_ingredient/<int:pk>', views.IngredientDelete.as_view(), name="delete_ingredient"),
     path('accounts/signup', views.sign_up, name='sign_up')
 ]
