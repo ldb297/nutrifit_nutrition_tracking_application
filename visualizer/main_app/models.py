@@ -11,10 +11,11 @@ MEALS = (
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=100)
-    kcals = models.IntegerField()
-    carbs = models.IntegerField()
-    fats = models.IntegerField()
-    sugars = models.IntegerField()
+    kcals = models.FloatField()
+    protein = models.FloatField()
+    carbs = models.FloatField()
+    fats = models.FloatField()
+    sugars = models.FloatField()
 
     def __str__(self):
         return self.name
