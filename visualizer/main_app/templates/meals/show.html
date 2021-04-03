@@ -3,10 +3,13 @@
     {% block content %}
     <h1>Meal details</h1>
     <div>
-        {{meal.get_meal_display}} on {{meal.date}}
+        {{meal.get_meal_display}} on {{meal.date}} {{meal.id}}<br/>
+    <a href="{% url 'meals_update' meal.id %}">Update details of this meal</a><br/>
+    <a href="{% url 'meals_delete' meal.id %}">DELETE this meal</a>
         <ul>
             {% for x in ingredients %}
-            {{ x.name }} {{x.meal_id}}
+            {{x}}
+            {{ x.name }} {{x.id}}<a href="{% url 'delete_ingredient' meal.id x.id %}">delete this item</a>
             <li>kcals: {{x.kcals}}</li>
             <li>carbs: {{x.carbs}}</li>
             <li>fats: {{x.fats}}</li>
@@ -15,27 +18,34 @@
             {% endfor %}
         </ul>
     </div>
+
+    <div>
+        <a href='/api'> search for ingredients </a>
+        <form method="POST">
+            {% csrf_token %}
+            {{ api_form.as_p }}
+            <button type="submit">search!</button>
+        </form>
+    </div>
     <div>
         <form method="POST" action="{% url 'add_ingredient' meal.id %}">
             {% csrf_token %}
-            {{ ingredient_form.as_p }}
-            <input type="submit" value="add ingredient">
+            <label for="name">name</label>
+            <input type="text" name="name" value="{{ingredient.name}}"><br/>
+            <label for="protein">protein</label>
+            <input type="text" name="protein" value="{{ingredient.protein}}"><br/>
+            <label for="kcals">kcals</label>
+            <input type="text" name="kcals" value="{{ingredient.kcals}}"><br/>
+            <label for="carbs">carbs</label>
+            <input type="text" name="carbs" value="{{ingredient.carbs}}"><br/>
+            <label for="fats">fats</label>
+            <input type="text" name="fats" value="{{ingredient.fats}}"><br/>
+            <label for="sugars">sugars</label>
+            <input type="text" name="sugars" value="{{ingredient.sugars}}"><br/>
+            <button type="submit">add to this meal</button>
         </form>
-        <table>
-            <thead>
-                <tr><th>Date</th><th>Meal</th></tr>
-            </thead>
-            <tbody>
-                {% for ingredient in meal.ingredient_set.all %}
-                <tr>
-                    <td>{{ingredient.name}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 
-    <a href="{% url 'meals_update' meal.id %}">Update details</a> <br/>
-    <a href="{% url 'meals_delete' meal.id %}">DELETE this meal</a>
+    <a href="{% url 'meals' %}">Back to all meals</a>
 
 {% endblock %}
