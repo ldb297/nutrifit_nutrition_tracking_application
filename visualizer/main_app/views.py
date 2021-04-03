@@ -47,9 +47,13 @@ API_URL = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query="
 #   return render(request, 'api.html', { 'api_form': api_form, 'user_meals':user_meals })
 
 def index(request):
+  print(request.user.is_authenticated)
+  if(request.user.is_authenticated == True):
     user = request.user
     user_meals = len(user.meal_set.all())
     return render(request, 'index.html', { 'user': user, 'meals': user_meals })
+  else:
+    return render(request, 'index.html', {'user': None, 'meals': None})
 
 #meals
 @login_required()
@@ -171,7 +175,7 @@ def add_ingredient(request, pk):
 
 def sign_up(request):
   error_message= ''
-  if request.method == 'POST':
+  if request.POST:
     form = UserCreationForm(request.POST)
     if form.is_valid():
       user = form.save()
