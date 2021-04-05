@@ -1,32 +1,37 @@
 {% extends 'base.html' %}
 
     {% block content %}
-    <h1>Meal details</h1>
-    <div>
+<h1>Meal details</h1>
+<div class="meal_show_container">
+<div class="meal_show">
         {{meal.get_meal_display}} on {{meal.date}} {{meal.id}}<br/>
-    <a href="{% url 'meals_update' meal.id %}">Update details of this meal</a><br/>
+    <a href="{% url 'meals_update' meal.id %}">Update details of this meal</a>
     <a href="{% url 'meals_delete' meal.id %}">DELETE this meal</a>
+    <div class="meal_show_ingredients">
         <ul>
             {% for x in ingredients %}
+            <div class="individual_ingredient">
             {{ x.name }} <a href="{% url 'delete_ingredient' meal.id x.id %}">delete this item</a>
             <li>kcals: {{x.kcals}}</li>
             <li>carbs: {{x.carbs}}</li>
             <li>fats: {{x.fats}}</li>
             <li>sugars: {{x.sugars}}</li>
             <br/>
+            </div>
             {% endfor %}
         </ul>
     </div>
-
-    <div>
+</div>
+<div class="meal_show_ingredient_form">
+    <div class="ingredient_search">
         search for ingredients
         <form method="POST">
             {% csrf_token %}
             {{ api_form.as_p }}
-            <button type="submit">search!</button>
+            <!-- <button type="submit">search!</button> -->
         </form>
     </div>
-    <div>
+    <div class="ingredient_add_form">
         <form method="POST" action="{% url 'add_ingredient' meal.id %}">
             {% csrf_token %}
             <label for="name">name</label>
@@ -44,7 +49,6 @@
             <button type="submit">add to this meal</button>
         </form>
     </div>
-
-    <a href="{% url 'meals' %}">Back to all meals</a>
-
+</div>
+</div>
 {% endblock %}
