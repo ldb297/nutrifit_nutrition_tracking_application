@@ -5,9 +5,8 @@ a {
 a:hover {
   color:whitesmoke;
   text-shadow: 2px 2px black;
-  font-size: 2em;
   background-color: darkolivegreen;
-  opacity: 90%;
+  opacity: 80%;
 }
 
 body {
@@ -19,10 +18,6 @@ body {
   background-image: url("images/bright_mixed_meal2.jpeg");
   background-repeat: no-repeat;
   background-attachment: fixed;
-}
-
-h1 {
-  color: darkolivegreen;
 }
 
 .pseudo_header_container {
@@ -61,6 +56,7 @@ h1 {
 
 #navbar_home {
   margin-top: -2%;
+  margin-bottom: 10%;
 }
 
 .nav_buttons {
@@ -79,9 +75,20 @@ footer {
   margin-top: 5%;
 }
 
-.meal_index {
-  background-color: #fffeea;
+.landing_page {
   width: 66%;
+  background-color: darkolivegreen;
+  opacity: 95%;
+  margin-top: 10%;
+  margin-bottom: -5%;
+}
+
+.meal_index {
+  color: #fffeea;
+  background-color: darkolivegreen;
+  width: 66%;
+  border-radius: 5px;
+  padding: 2%;
 }
 
 .meal_show_container {
@@ -109,9 +116,14 @@ footer {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 20%;
   padding: 5%;
   height: fit-content;
   width: fit-content;
-  margin-top: 10%;
+  margin: 2% 2% 2% 25%;
+}
+
+.new_meal_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
