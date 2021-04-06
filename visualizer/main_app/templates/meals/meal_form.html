@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section>
+<div class="new_meal_form">
     <h1>Add a Meal</h1>
     (dates must be in YYYY-MM-DD format)
     <form method="POST">
@@ -9,6 +9,6 @@
         {{ form.as_p }}
         <button type="submit" value="Update">Save</button>
     </form>
-</section>
+</div>
 
 {% endblock %}
